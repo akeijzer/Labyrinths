@@ -9,8 +9,33 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/textViewNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Number = 0"
+        android:textSize="40dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignRight="@+id/textViewNumber"
+        android:onClick="subOne"
+        android:text="Subtract 1" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewNumber"
+        android:layout_below="@+id/textViewNumber"
+        android:layout_marginTop="104dp"
+        android:onClick="addOne"
+        android:text="Add 1" />
 
 </RelativeLayout>
