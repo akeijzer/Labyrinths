@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 public class Menu extends ListActivity
 {
-	String[] classes = { "MainActivity", "Orientation" };
+	String[] classes = { "MainActivity", "Orientation", "Game" };
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class Menu extends ListActivity
 		super.onListItemClick(l, v, position, id);
 		String clazzName = classes[position];
 		try {
-			Class clazz = Class.forName("akeijzer.labyrinths." + clazzName);
+			Class<?> clazz = Class.forName("akeijzer.labyrinths." + clazzName);
 			Intent intent = new Intent(Menu.this, clazz);
 			startActivity(intent);
 		} catch (ClassNotFoundException e) {

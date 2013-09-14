@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:text="Number = 0"
-        android:textSize="40dp" />
+        android:textSize="40sp" />
 
     <Button
         android:id="@+id/button1"
