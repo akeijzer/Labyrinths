@@ -1,77 +1,73 @@
 package akeijzer.labyrinths.view;
 
 import akeijzer.labyrinths.Game;
-import akeijzer.labyrinths.R;
+import akeijzer.labyrinths.game.GameThread;
+import akeijzer.labyrinths.object.Ball;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-public class GameView extends SurfaceView implements Runnable
+public class GameView extends SurfaceView implements Callback
 {
-	Game game;
-	SurfaceHolder holder;
-	Thread thread;
-	boolean isRunning = false;
+	private Game game;
+	private SurfaceHolder holder;
+	private GameThread thread;
 	
-	Bitmap optionIcon;
+	public float orientation[] = new float[3];
+	
+	private Ball ball;
 
 	public GameView(Context context) 
 	{
 		super(context);
 		game = (Game) context;
 		holder = getHolder();
+		holder.addCallback(this);
 		
-		optionIcon = BitmapFactory.decodeResource(getResources(), R.drawable.options);
+		thread = new GameThread(holder, this);
+		
+		ball = new Ball(20, 20, this);
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder)
+	{
+		thread.setRunning(true);
+		thread.start();
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder)
+	{
+		Log.d("GameView", "Surface is being destroyed");
+		thread.setRunning(false);
+		while (true) {
+			try {
+				thread.join();
+				break;
+			} catch (InterruptedException e) {
+			}
+		}
+		Log.d("GameView", "Surface is destroyed");
 	}
 	
 	@Override
-	protected void onDraw(Canvas canvas) 
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){}
+	
+	public void render(Canvas canvas)
 	{
-		super.onDraw(canvas);
+		canvas.drawColor(Color.WHITE);
+		ball.draw(canvas);
 	}
-
-	@Override
-	public void run() 
+	
+	public void update()
 	{
-		while(isRunning)
-		{
-			if (!holder.getSurface().isValid())
-				continue;
-			
-			Canvas canvas = holder.lockCanvas();
-			
-			canvas.drawColor(Color.WHITE);
-			canvas.drawBitmap(optionIcon, game.x, game.y, null);
-			
-			holder.unlockCanvasAndPost(canvas);
-		}
+		orientation = game.orientation.getOrientation();
+		ball.update();
 	}
-
-	public void pause()
-	{
-		isRunning = false;
-		while (true)
-		{
-			try
-			{
-				thread.join();
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			break;
-		}
-		thread = null;
-	}
-
-	public void resume()
-	{
-		isRunning = true;
-		thread = new Thread(this);
-		thread.start();
-	}
+	
 }
