@@ -7,9 +7,10 @@ import android.view.SurfaceHolder;
 
 public class GameThread extends Thread
 {
-	private final static int 	MAX_FPS = 30;	
-	private final static int	MAX_FRAME_SKIPS = 5;	
-	private final static int	FRAME_PERIOD = 1000 / MAX_FPS;	
+	private final static int MAX_FPS = 30;
+	private final static int MAX_FRAME_SKIPS = 5;	
+	private final static int FRAME_PERIOD = 1000 / MAX_FPS;
+	public final static float SECONDS_PER_FRAME = 1 / (float)MAX_FPS;
 
 	private SurfaceHolder surfaceHolder;
 	private GameView gameView;

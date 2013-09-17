@@ -30,7 +30,7 @@ public class GameView extends SurfaceView implements Callback
 		
 		thread = new GameThread(holder, this);
 		
-		ball = new Ball(20, 20, this);
+		ball = new Ball(20, 20, 0.02F, this);
 	}
 
 	@Override
