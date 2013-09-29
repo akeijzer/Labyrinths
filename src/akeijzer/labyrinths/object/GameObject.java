@@ -4,13 +4,13 @@ import akeijzer.labyrinths.view.GameView;
 
 public abstract class GameObject
 {
-	public int sizeX, sizeY, posX, posY;
-	protected GameView view;
-	
-	public GameObject(int sizeX, int sizeY, GameView view)
-	{
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
-		this.view = view;
-	}
+    public int posX, posY;
+    protected GameView view;
+
+    public GameObject(int posX, int posY, GameView view)
+    {
+        this.posX = posX;
+        this.posY = posY;
+        this.view = view;
+    }
 }

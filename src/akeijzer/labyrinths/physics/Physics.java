@@ -1,15 +1,12 @@
 package akeijzer.labyrinths.physics;
 
-
 public class Physics
 {
-	public static float calculateAcceleration(float mass, float orientation, float frictionCoefficent)
-	{
-		float gravityForce = mass * 9.81F;
-		float forwardForce = (float) (gravityForce * Math.sin(orientation));
-		float normalForce = (float) (gravityForce * Math.cos(orientation));
-		float frictionForce = normalForce * frictionCoefficent;
-		float acceleration = (forwardForce)/mass;
-		return acceleration;
-	}
+    public static final float GAVITATION_CONSTANT = 9.81F;
+    public static final float ACCELERATION_CONSTANT = 0.714F;
+
+    public static float calculateAcceleration(float orientation)
+    {
+        return (ACCELERATION_CONSTANT * GAVITATION_CONSTANT * (float) Math.sin(orientation));
+    }
 }
