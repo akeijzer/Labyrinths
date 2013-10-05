@@ -1,15 +1,15 @@
 package akeijzer.labyrinths.view;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import akeijzer.labyrinths.Game;
 import akeijzer.labyrinths.game.GameThread;
-import akeijzer.labyrinths.maths.Circle;
-import akeijzer.labyrinths.maths.Vector2;
+import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.object.Ball;
+import akeijzer.labyrinths.object.EndPoint;
 import akeijzer.labyrinths.object.Wall;
+import akeijzer.labyrinths.object.upgrade.Upgrade;
 import akeijzer.labyrinths.physics.CollisionEffects;
-import akeijzer.labyrinths.physics.Intersection;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,13 +21,11 @@ import android.view.SurfaceView;
 public class GameView extends SurfaceView implements Callback
 {
     private Game game;
+    public World world;
     private SurfaceHolder holder;
     private GameThread thread;
 
     public float orientation[] = new float[3];
-
-    private ArrayList<Ball> balls;
-    public ArrayList<Wall> walls;
 
     public GameView(Context context)
     {
@@ -35,30 +33,17 @@ public class GameView extends SurfaceView implements Callback
         game = (Game) context;
         holder = getHolder();
         holder.addCallback(this);
+        
 
         thread = new GameThread(holder, this);
-        walls = new ArrayList<Wall>();
-        balls = new ArrayList<Ball>();
-        balls.add(new Ball(200, 200, 40, 0.2F, this));
-        balls.add(new Ball(200, 400, 40, 0.002F, this));
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+    	this.world = new World(this);
         thread.setRunning(true);
         thread.start();
-
-        walls.add(new Wall(300, 800, 300, 50, this));
-        walls.add(new Wall(300, 950, 50, 300, this));
-
-        walls.add(new Wall(getWidth() / 2 - 15, getHeight() / 2 - 50, 50, getHeight() - 100, this));
-
-        walls.add(new Wall(getWidth() / 2, 5, getWidth(), 10, this));
-        walls.add(new Wall(getWidth() / 2, getHeight() - 5, getWidth(), 10, this));
-
-        walls.add(new Wall(5, getHeight() / 2, 10, getHeight(), this));
-        walls.add(new Wall(getWidth() - 5, getHeight() / 2, 10, getHeight(), this));
     }
 
     @Override
@@ -88,27 +73,51 @@ public class GameView extends SurfaceView implements Callback
     public void render(Canvas canvas)
     {
         canvas.drawColor(Color.WHITE);
-        for (Wall wall : walls)
+        for (Wall wall : world.walls)
         {
             wall.draw(canvas);
         }
 
-        for (Ball ball : balls)
+        for (Ball ball : world.balls)
         {
             ball.draw(canvas);
+        }
+        for (EndPoint endPoint : world.endPoints)
+        {
+        	endPoint.draw(canvas);
+        }
+        for (Upgrade upgrade : world.upgrades)
+        {
+        	upgrade.draw(canvas);
         }
     }
 
     public void update()
     {
         orientation = game.orientation.getOrientation();
-        for (Ball ball : balls)
-        {
-            ball.update();
+        
+		Iterator<Ball> iBA = world.balls.iterator();
+		while (iBA.hasNext())
+		{
+			Ball balls = iBA.next();
+        	balls.update();
         }
-        for (Ball ball : balls)
+		Iterator<EndPoint> iEP = world.endPoints.iterator();
+		while (iEP.hasNext())
+		{
+			EndPoint endPoint = iEP.next();
+        	endPoint.update();
+        }
+		Iterator<Upgrade> iUP = world.upgrades.iterator();
+		while (iUP.hasNext())
+		{
+			Upgrade upgrade = iUP.next();
+        	if (upgrade.update())
+        		iUP.remove();
+        }
+        for (Ball ball : world.balls)
         {
-            for (Ball ball2 : balls)
+            for (Ball ball2 : world.balls)
             {
                 if (ball2 != ball)
                 {
@@ -116,35 +125,6 @@ public class GameView extends SurfaceView implements Callback
                 }
             }
         }
-    }
-
-    public boolean checkCollisions(Ball ball, Circle nextPos)
-    {
-        boolean collision = false;
-        for (Wall wall : walls)
-        {
-            Intersection inter = CollisionEffects.handleIntersection(wall.bounds, new Vector2(ball.posX, ball.posY), nextPos.center, ball.radius);
-            if (inter != null)
-            {
-                float remainingTime = 1.0f - inter.time;
-                float dx = nextPos.center.x - ball.posX;
-                float dy = nextPos.center.y - ball.posY;
-                float dot = dx * inter.nx + dy * inter.ny;
-                float ndx = dx - 2 * dot * inter.nx;
-                float ndy = dy - 2 * dot * inter.ny;
-                float newx = inter.cx + ndx * remainingTime;
-                float newy = inter.cy + ndy * remainingTime;
-
-                nextPos.center.x = (int) newx;
-                nextPos.center.y = (int) newy;
-
-                ball.velocityX = ndx * GameThread.MAX_FPS;
-                ball.velocityY = ndy * GameThread.MAX_FPS;
-                collision = true;
-            }
-        }
-        if (collision) return true;
-        else return false;
     }
 
 }

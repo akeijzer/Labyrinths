@@ -3,7 +3,7 @@ package akeijzer.labyrinths.object;
 import akeijzer.labyrinths.maths.Circle;
 import akeijzer.labyrinths.view.GameView;
 
-public class GameCircle extends GameObject
+public abstract class GameCircle extends GameObject
 {
     public int radius;
     public Circle bounds;
@@ -18,6 +18,7 @@ public class GameCircle extends GameObject
     public void update()
     {
         bounds.center.set(posX, posY);
+        bounds.radius = radius;
     }
 
 }

@@ -6,8 +6,7 @@ import akeijzer.labyrinths.object.Ball;
 
 public class CollisionEffects
 {
-    // ref
-    // http://gamedev.stackexchange.com/questions/20516/ball-collisions-sticking-together
+    // ref: http://gamedev.stackexchange.com/questions/20516/ball-collisions-sticking-together
     public static void circleEffect(Ball a, Ball b)
     {
         double xDist, yDist;

@@ -3,7 +3,7 @@ package akeijzer.labyrinths.object;
 import akeijzer.labyrinths.maths.Rectangle;
 import akeijzer.labyrinths.view.GameView;
 
-public class GameRect extends GameObject
+public abstract class GameRect extends GameObject
 {
     public int sizeX, sizeY;
     public Rectangle bounds;

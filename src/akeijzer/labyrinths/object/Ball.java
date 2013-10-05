@@ -13,6 +13,7 @@ import android.graphics.Paint;
 
 public class Ball extends GameCircle
 {
+	public int density;
     public Bitmap icon;
     public Paint paint;
     public float mass;
@@ -27,11 +28,11 @@ public class Ball extends GameCircle
     {
         super(posX, posY, radius, view);
         this.mass = mass;
-        posX = posY = 200;
         nextPos = new Circle(posX, posY, radius);
 
         this.icon = BitmapFactory.decodeResource(view.getResources(), R.drawable.options);
         this.icon = Bitmap.createScaledBitmap(icon, radius * 2, radius * 2, false);
+        density = view.getResources().getDisplayMetrics().densityDpi;
         paint = new Paint();
         paint.setColor(Color.GREEN);
     }
@@ -46,15 +47,15 @@ public class Ball extends GameCircle
     @Override
     public void update()
     {
-        velocityX += (Physics.calculateAcceleration(view.orientation[2]) * GameThread.SECONDS_PER_FRAME) * 126;
-        velocityY += (Physics.calculateAcceleration(-view.orientation[1]) * GameThread.SECONDS_PER_FRAME) * 126;
+        velocityX += (Physics.calculateAcceleration(view.orientation[2]) * GameThread.SECONDS_PER_FRAME) * density;
+        velocityY += (Physics.calculateAcceleration(-view.orientation[1]) * GameThread.SECONDS_PER_FRAME) * density;
 
         nextPosX = posX + (int) (velocityX * GameThread.SECONDS_PER_FRAME);
         nextPosY = posY + (int) (velocityY * GameThread.SECONDS_PER_FRAME);
 
         nextPos.center.x = nextPosX;
         nextPos.center.y = nextPosY;
-        boolean collision = view.checkCollisions(this, nextPos);
+        boolean collision = view.world.checkCollisions(view, this, nextPos);
 
         if (!collision)
         {
@@ -65,6 +66,23 @@ public class Ball extends GameCircle
         {
             posX = (int) nextPos.center.x;
             posY = (int) nextPos.center.y;
+        }
+        
+        if (posX - radius <= 0)
+        {
+        	posX = 15 + radius;
+        }
+        if (posX + radius >= view.getWidth())
+        {
+        	posX = view.getWidth() - (15 + radius);
+        }
+        if (posY - radius <= 0)
+        {
+        	posY = 15 + radius;
+        }
+        if (posY + radius >= view.getHeight())
+        {
+        	posY = view.getHeight() - (15 + radius);
         }
 
         super.update();
