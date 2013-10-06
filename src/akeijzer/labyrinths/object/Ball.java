@@ -13,7 +13,7 @@ import android.graphics.Paint;
 
 public class Ball extends GameCircle
 {
-	public int density;
+    public int density;
     public Bitmap icon;
     public Paint paint;
     public float mass;
@@ -67,22 +67,26 @@ public class Ball extends GameCircle
             posX = (int) nextPos.center.x;
             posY = (int) nextPos.center.y;
         }
-        
+
         if (posX - radius <= 0)
         {
-        	posX = 15 + radius;
+            posX = 15 + radius;
+            velocityX = 0;
         }
         if (posX + radius >= view.getWidth())
         {
-        	posX = view.getWidth() - (15 + radius);
+            posX = view.getWidth() - (15 + radius);
+            velocityX = 0;
         }
         if (posY - radius <= 0)
         {
-        	posY = 15 + radius;
+            posY = 15 + radius;
+            velocityY = 0;
         }
         if (posY + radius >= view.getHeight())
         {
-        	posY = view.getHeight() - (15 + radius);
+            posY = view.getHeight() - (15 + radius);
+            velocityY = 0;
         }
 
         super.update();

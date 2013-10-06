@@ -16,4 +16,12 @@ public abstract class GameRect extends GameObject
         bounds = new Rectangle(posX, posY, sizeX, sizeY);
     }
 
+    public void updateBounds()
+    {
+        bounds.pos.x = posX;
+        bounds.pos.y = posY;
+        bounds.width = sizeX;
+        bounds.height = sizeY;
+    }
+
 }

@@ -7,13 +7,13 @@ import android.graphics.Canvas;
 public abstract class Upgrade extends GameRect
 {
 
-	public Upgrade(int posX, int posY, GameView view)
-	{
-		super(posX, posY, 80, 80, view);
-	}
+    public Upgrade(int posX, int posY, GameView view)
+    {
+        super(posX, posY, 80, 80, view);
+    }
 
-	public abstract boolean update();
-	
-	public abstract void draw(Canvas canvas);
-	
+    public abstract boolean collision();
+
+    public abstract void draw(Canvas canvas);
+
 }

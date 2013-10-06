@@ -7,7 +7,7 @@ import akeijzer.labyrinths.game.GameThread;
 import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.object.Ball;
 import akeijzer.labyrinths.object.EndPoint;
-import akeijzer.labyrinths.object.Wall;
+import akeijzer.labyrinths.object.GameRectCollidable;
 import akeijzer.labyrinths.object.upgrade.Upgrade;
 import akeijzer.labyrinths.physics.CollisionEffects;
 import android.content.Context;
@@ -33,7 +33,6 @@ public class GameView extends SurfaceView implements Callback
         game = (Game) context;
         holder = getHolder();
         holder.addCallback(this);
-        
 
         thread = new GameThread(holder, this);
     }
@@ -41,7 +40,7 @@ public class GameView extends SurfaceView implements Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-    	this.world = new World(this);
+        this.world = new World(this);
         thread.setRunning(true);
         thread.start();
     }
@@ -73,9 +72,9 @@ public class GameView extends SurfaceView implements Callback
     public void render(Canvas canvas)
     {
         canvas.drawColor(Color.WHITE);
-        for (Wall wall : world.walls)
+        for (GameRectCollidable collidable : world.collidables)
         {
-            wall.draw(canvas);
+            collidable.draw(canvas);
         }
 
         for (Ball ball : world.balls)
@@ -84,36 +83,35 @@ public class GameView extends SurfaceView implements Callback
         }
         for (EndPoint endPoint : world.endPoints)
         {
-        	endPoint.draw(canvas);
+            endPoint.draw(canvas);
         }
         for (Upgrade upgrade : world.upgrades)
         {
-        	upgrade.draw(canvas);
+            upgrade.draw(canvas);
         }
     }
 
     public void update()
     {
         orientation = game.orientation.getOrientation();
-        
-		Iterator<Ball> iBA = world.balls.iterator();
-		while (iBA.hasNext())
-		{
-			Ball balls = iBA.next();
-        	balls.update();
+
+        Iterator<Ball> iBA = world.balls.iterator();
+        while (iBA.hasNext())
+        {
+            Ball balls = iBA.next();
+            balls.update();
         }
-		Iterator<EndPoint> iEP = world.endPoints.iterator();
-		while (iEP.hasNext())
-		{
-			EndPoint endPoint = iEP.next();
-        	endPoint.update();
+        Iterator<EndPoint> iEP = world.endPoints.iterator();
+        while (iEP.hasNext())
+        {
+            EndPoint endPoint = iEP.next();
+            endPoint.update();
         }
-		Iterator<Upgrade> iUP = world.upgrades.iterator();
-		while (iUP.hasNext())
-		{
-			Upgrade upgrade = iUP.next();
-        	if (upgrade.update())
-        		iUP.remove();
+        Iterator<Upgrade> iUP = world.upgrades.iterator();
+        while (iUP.hasNext())
+        {
+            Upgrade upgrade = iUP.next();
+            if (upgrade.collision()) iUP.remove();
         }
         for (Ball ball : world.balls)
         {
