@@ -42,7 +42,7 @@ public class Level1 extends Level
 
         world.objects.add(new UpgradeIncreaseSize(500, 500, view));
         world.objects.add(new UpgradeDecreaseSize(500, 1000, view));
-        
+
         world.objects.add(new Booster(300, 600, 200, 200, Side.TOP, view));
     }
 }

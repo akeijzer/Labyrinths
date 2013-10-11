@@ -11,10 +11,10 @@ public class Physics
     {
         return (ACCELERATION_CONSTANT * GAVITATION_CONSTANT * (float) Math.sin(orientation));
     }
-    
+
     public static float calculateFriction(float velocity, float radius)
     {
-        
-        return (float) (0.5 * AIR_DESITY * velocity*velocity * Math.PI*radius*radius * DRAG_COEFFICIENT);
+
+        return (float) (0.5 * AIR_DESITY * velocity * velocity * Math.PI * radius * radius * DRAG_COEFFICIENT);
     }
 }

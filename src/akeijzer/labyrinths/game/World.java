@@ -53,10 +53,10 @@ public class World
                     float ndy = dy - 2 * dot * inter.ny;
                     float newx = inter.cx + ndx * remainingTime;
                     float newy = inter.cy + ndy * remainingTime;
-    
+
                     nextPos.center.x = (int) newx;
                     nextPos.center.y = (int) newy;
-    
+
                     ball.velocityX = ndx * GameThread.MAX_FPS * 0.9F;
                     ball.velocityY = ndy * GameThread.MAX_FPS * 0.9F;
                     collision = true;

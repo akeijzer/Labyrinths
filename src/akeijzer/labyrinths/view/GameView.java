@@ -80,12 +80,12 @@ public class GameView extends SurfaceView implements Callback
     public void render(Canvas canvas)
     {
         canvas.drawColor(Color.WHITE);
-        
+
         for (GameObject gameObject : world.objects)
         {
             gameObject.draw(canvas);
         }
-        
+
         for (Ball ball : world.balls)
         {
             ball.draw(canvas);
@@ -95,7 +95,7 @@ public class GameView extends SurfaceView implements Callback
     public void update()
     {
         orientation = game.orientation.getOrientation();
-        
+
         iBalls = world.balls.iterator();
         while (iBalls.hasNext())
         {
@@ -103,7 +103,7 @@ public class GameView extends SurfaceView implements Callback
             ball.update();
         }
         iBalls = null;
-        
+
         iObjects = world.objects.iterator();
         while (!stopIteration && iObjects.hasNext())
         {
@@ -122,23 +122,23 @@ public class GameView extends SurfaceView implements Callback
                 }
             }
         }
-        
+
         if (world.balls.isEmpty())
         {
             world.levelHandler.loadNextLevel();
         }
     }
-    
+
     public int tickSoundId;
+
     public void initSounds()
     {
         tickSoundId = soundPool.load(game, R.raw.tick, 1);
     }
-    
+
     public void playSound(int soundId, float rate)
     {
-        if (playSounds)
-            soundPool.play(soundId, 1.0F, 1.0F, 1, 0, rate);
+        if (playSounds) soundPool.play(soundId, 1.0F, 1.0F, 1, 0, rate);
     }
 
 }

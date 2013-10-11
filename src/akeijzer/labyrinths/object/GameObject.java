@@ -25,7 +25,7 @@ public abstract class GameObject
             view.iObjects.remove();
         }
     }
-    
+
     public void kill()
     {
         kill = true;

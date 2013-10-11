@@ -104,22 +104,22 @@ public class Ball
         bounds.center.set(posX, posY);
         bounds.radius = radius;
     }
-    
+
     public void onCollide()
     {
         playSound(getSoundPitch() + 0.5F);
     }
-    
+
     public float getSoundPitch()
     {
-        return view.playSounds? (Math.abs(velocityX) + Math.abs(velocityY))/(density*25) : 0;
+        return view.playSounds ? (Math.abs(velocityX) + Math.abs(velocityY)) / (density * 25) : 0;
     }
-    
+
     public void playSound(float pitch)
     {
         view.playSound(view.tickSoundId, pitch);
     }
-    
+
     public void kill()
     {
         kill = true;

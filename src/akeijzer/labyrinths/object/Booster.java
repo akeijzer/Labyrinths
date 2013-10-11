@@ -13,7 +13,7 @@ public class Booster extends GameRect
 {
     public Paint paint;
     private Side boostingSide;
-    
+
     public Booster(int posX, int posY, int sizeX, int sizeY, Side boostingSide, GameView view)
     {
         super(posX, posY, sizeX, sizeY, view);
@@ -41,19 +41,19 @@ public class Booster extends GameRect
             {
                 if (boostingSide == Side.LEFT)
                 {
-                    ball.velocityX = ball.velocityX - ball.density/5;
+                    ball.velocityX = ball.velocityX - ball.density / 5;
                 }
                 else if (boostingSide == Side.RIGHT)
                 {
-                    ball.velocityX = ball.velocityX + ball.density/5;
+                    ball.velocityX = ball.velocityX + ball.density / 5;
                 }
                 else if (boostingSide == Side.TOP)
                 {
-                    ball.velocityY = ball.velocityY - ball.density/5;
+                    ball.velocityY = ball.velocityY - ball.density / 5;
                 }
                 else if (boostingSide == Side.BOTTOM)
                 {
-                    ball.velocityY = ball.velocityY + ball.density/5;
+                    ball.velocityY = ball.velocityY + ball.density / 5;
                 }
             }
         }

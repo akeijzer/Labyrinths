@@ -25,7 +25,6 @@ public class Button extends GameRectCollidable
     @Override
     public void onCollide()
     {
-        super.update();
         if (!isPushed)
         {
             if (connectedSide == Side.LEFT)
@@ -61,5 +60,8 @@ public class Button extends GameRectCollidable
     }
 
     @Override
-    public void update() {}
+    public void update()
+    {
+        super.update();
+    }
 }

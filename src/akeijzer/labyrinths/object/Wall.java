@@ -22,7 +22,9 @@ public class Wall extends GameRectCollidable
     }
 
     @Override
-    public void onCollide() {}
+    public void onCollide()
+    {
+    }
 
     @Override
     public void update()
