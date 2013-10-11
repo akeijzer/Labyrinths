@@ -7,6 +7,7 @@ public abstract class GameObject
 {
     public int posX, posY;
     protected GameView view;
+    private boolean kill = false;
 
     public GameObject(int posX, int posY, GameView view)
     {
@@ -16,4 +17,17 @@ public abstract class GameObject
     }
 
     public abstract void draw(Canvas canvas);
+
+    public void update()
+    {
+        if (kill)
+        {
+            view.iObjects.remove();
+        }
+    }
+    
+    public void kill()
+    {
+        kill = true;
+    }
 }

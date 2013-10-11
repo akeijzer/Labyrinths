@@ -11,14 +11,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Ball extends GameCircle
+public class Ball
 {
     public int density;
-    public Bitmap icon;
-    public Paint paint;
+    private Bitmap icon;
+    private Paint paint;
     public float mass;
+    public int radius;
+    public Circle bounds;
     public float velocityX;
     public float velocityY;
+    public int posX, posY;
+    private GameView view;
+    private boolean kill = false;
 
     public int nextPosX;
     public int nextPosY;
@@ -26,8 +31,12 @@ public class Ball extends GameCircle
 
     public Ball(int posX, int posY, int radius, float mass, GameView view)
     {
-        super(posX, posY, radius, view);
+        this.posX = posX;
+        this.posY = posY;
+        this.view = view;
         this.mass = mass;
+        this.radius = radius;
+        bounds = new Circle(posX, posY, (float) radius);
         nextPos = new Circle(posX, posY, radius);
 
         this.icon = BitmapFactory.decodeResource(view.getResources(), R.drawable.options);
@@ -44,9 +53,12 @@ public class Ball extends GameCircle
         canvas.drawCircle(posX, posY, radius, paint);
     }
 
-    @Override
     public void update()
     {
+        if (kill)
+        {
+            view.iBalls.remove();
+        }
         velocityX += (Physics.calculateAcceleration(view.orientation[2]) * GameThread.SECONDS_PER_FRAME) * density;
         velocityY += (Physics.calculateAcceleration(-view.orientation[1]) * GameThread.SECONDS_PER_FRAME) * density;
 
@@ -89,6 +101,27 @@ public class Ball extends GameCircle
             velocityY = 0;
         }
 
-        super.update();
+        bounds.center.set(posX, posY);
+        bounds.radius = radius;
+    }
+    
+    public void onCollide()
+    {
+        playSound(getSoundPitch() + 0.5F);
+    }
+    
+    public float getSoundPitch()
+    {
+        return view.playSounds? (Math.abs(velocityX) + Math.abs(velocityY))/(density*25) : 0;
+    }
+    
+    public void playSound(float pitch)
+    {
+        view.playSound(view.tickSoundId, pitch);
+    }
+    
+    public void kill()
+    {
+        kill = true;
     }
 }

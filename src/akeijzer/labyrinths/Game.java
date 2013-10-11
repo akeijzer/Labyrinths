@@ -9,7 +9,7 @@ import android.view.WindowManager;
 
 public class Game extends Activity
 {
-    GameView view;
+    public GameView view;
     public OrientationListener orientation;
 
     @Override

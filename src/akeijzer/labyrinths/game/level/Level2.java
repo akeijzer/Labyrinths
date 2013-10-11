@@ -31,10 +31,10 @@ public class Level2 extends Level
         /*
          * Screen Walls
          */
-        world.collidables.add(new Wall(width / 2, 5, width, 10, view));
-        world.collidables.add(new Wall(width / 2, height - 5, width, 10, view));
-        world.collidables.add(new Wall(5, height / 2, 10, height, view));
-        world.collidables.add(new Wall(width - 5, height / 2, 10, height, view));
+        world.objects.add(new Wall(width / 2, 5, width, 10, view));
+        world.objects.add(new Wall(width / 2, height - 5, width, 10, view));
+        world.objects.add(new Wall(5, height / 2, 10, height, view));
+        world.objects.add(new Wall(width - 5, height / 2, 10, height, view));
     }
 
 }

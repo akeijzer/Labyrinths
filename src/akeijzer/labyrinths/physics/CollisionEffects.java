@@ -11,12 +11,12 @@ public class CollisionEffects
     public static void circleEffect(Ball a, Ball b)
     {
         double xDist, yDist;
-        xDist = a.posX - b.posX;
-        yDist = a.posY - b.posY;
+        xDist = a.bounds.center.x - b.bounds.center.x;
+        yDist = a.bounds.center.y - b.bounds.center.y;
         double distSquared = xDist * xDist + yDist * yDist;
         // Check the squared distances instead of the the distances, same
         // result, but avoids a square root.
-        if (distSquared <= (a.radius + b.radius) * (a.radius + b.radius))
+        if (distSquared <= (a.bounds.radius + b.bounds.radius) * (a.bounds.radius + b.bounds.radius))
         {
             double speedXocity = b.velocityX - a.velocityX;
             double speedYocity = b.velocityY - a.velocityY;
@@ -39,6 +39,7 @@ public class CollisionEffects
                 a.velocityY += (collisionWeightA * yCollision);
                 b.velocityX -= (collisionWeightB * xCollision);
                 b.velocityY -= (collisionWeightB * yCollision);
+                a.playSound(a.getSoundPitch() + b.getSoundPitch() + 0.5F);
             }
         }
     }

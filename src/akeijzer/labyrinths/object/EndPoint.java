@@ -22,18 +22,14 @@ public class EndPoint extends GameRect
 
     public void update()
     {
+        super.update();
         Iterator<Ball> it = view.world.balls.iterator();
         while (it.hasNext())
         {
             Ball ball = it.next();
             if (OverlapTester.overlapCircleRectangle(ball.bounds, bounds))
             {
-                view.world.balls.remove(ball);
-                if (view.world.balls.size() == 0)
-                {
-                    view.world.levelHandler.loadNextLevel();
-                }
-                break;
+                ball.kill();
             }
         }
     }

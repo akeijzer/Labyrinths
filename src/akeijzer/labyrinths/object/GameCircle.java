@@ -15,10 +15,4 @@ public abstract class GameCircle extends GameObject
         bounds = new Circle(posX, posY, (float) radius);
     }
 
-    public void update()
-    {
-        bounds.center.set(posX, posY);
-        bounds.radius = radius;
-    }
-
 }

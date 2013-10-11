@@ -11,9 +11,7 @@ public abstract class Upgrade extends GameRect
     {
         super(posX, posY, 80, 80, view);
     }
-
-    public abstract boolean collision();
-
+    
     public abstract void draw(Canvas canvas);
 
 }

@@ -25,6 +25,7 @@ public class Button extends GameRectCollidable
     @Override
     public void onCollide()
     {
+        super.update();
         if (!isPushed)
         {
             if (connectedSide == Side.LEFT)
@@ -48,7 +49,7 @@ public class Button extends GameRectCollidable
                 sizeY = sizeY / 2;
             }
             updateBounds();
-            view.world.collidables.remove(door);
+            door.kill();
             isPushed = true;
         }
     }
@@ -58,4 +59,7 @@ public class Button extends GameRectCollidable
     {
         canvas.drawRect(posX - sizeX / 2, posY + sizeY / 2, posX + sizeX / 2, posY - sizeY / 2, paint);
     }
+
+    @Override
+    public void update() {}
 }

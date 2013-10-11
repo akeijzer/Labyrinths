@@ -27,4 +27,10 @@ public class Door extends GameRectCollidable
         canvas.drawRect(posX - sizeX / 2, posY + sizeY / 2, posX + sizeX / 2, posY - sizeY / 2, paint);
     }
 
+    @Override
+    public void update()
+    {
+        super.update();
+    }
+
 }

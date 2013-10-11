@@ -3,16 +3,17 @@ package akeijzer.labyrinths.view;
 import java.util.Iterator;
 
 import akeijzer.labyrinths.Game;
+import akeijzer.labyrinths.R;
 import akeijzer.labyrinths.game.GameThread;
 import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.object.Ball;
-import akeijzer.labyrinths.object.EndPoint;
-import akeijzer.labyrinths.object.GameRectCollidable;
-import akeijzer.labyrinths.object.upgrade.Upgrade;
+import akeijzer.labyrinths.object.GameObject;
 import akeijzer.labyrinths.physics.CollisionEffects;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -22,8 +23,13 @@ public class GameView extends SurfaceView implements Callback
 {
     private Game game;
     public World world;
+    private SoundPool soundPool;
+    public boolean playSounds = true;
     private SurfaceHolder holder;
     private GameThread thread;
+    public Iterator<GameObject> iObjects;
+    public Iterator<Ball> iBalls;
+    public boolean stopIteration = false;
 
     public float orientation[] = new float[3];
 
@@ -35,6 +41,8 @@ public class GameView extends SurfaceView implements Callback
         holder.addCallback(this);
 
         thread = new GameThread(holder, this);
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        initSounds();
     }
 
     @Override
@@ -72,47 +80,38 @@ public class GameView extends SurfaceView implements Callback
     public void render(Canvas canvas)
     {
         canvas.drawColor(Color.WHITE);
-        for (GameRectCollidable collidable : world.collidables)
+        
+        for (GameObject gameObject : world.objects)
         {
-            collidable.draw(canvas);
+            gameObject.draw(canvas);
         }
-
+        
         for (Ball ball : world.balls)
         {
             ball.draw(canvas);
-        }
-        for (EndPoint endPoint : world.endPoints)
-        {
-            endPoint.draw(canvas);
-        }
-        for (Upgrade upgrade : world.upgrades)
-        {
-            upgrade.draw(canvas);
         }
     }
 
     public void update()
     {
         orientation = game.orientation.getOrientation();
-
-        Iterator<Ball> iBA = world.balls.iterator();
-        while (iBA.hasNext())
+        
+        iBalls = world.balls.iterator();
+        while (iBalls.hasNext())
         {
-            Ball balls = iBA.next();
-            balls.update();
+            Ball ball = iBalls.next();
+            ball.update();
         }
-        Iterator<EndPoint> iEP = world.endPoints.iterator();
-        while (iEP.hasNext())
+        iBalls = null;
+        
+        iObjects = world.objects.iterator();
+        while (!stopIteration && iObjects.hasNext())
         {
-            EndPoint endPoint = iEP.next();
-            endPoint.update();
+            GameObject gameObject = iObjects.next();
+            gameObject.update();
         }
-        Iterator<Upgrade> iUP = world.upgrades.iterator();
-        while (iUP.hasNext())
-        {
-            Upgrade upgrade = iUP.next();
-            if (upgrade.collision()) iUP.remove();
-        }
+        stopIteration = false;
+        iObjects = null;
         for (Ball ball : world.balls)
         {
             for (Ball ball2 : world.balls)
@@ -123,6 +122,23 @@ public class GameView extends SurfaceView implements Callback
                 }
             }
         }
+        
+        if (world.balls.isEmpty())
+        {
+            world.levelHandler.loadNextLevel();
+        }
+    }
+    
+    public int tickSoundId;
+    public void initSounds()
+    {
+        tickSoundId = soundPool.load(game, R.raw.tick, 1);
+    }
+    
+    public void playSound(int soundId, float rate)
+    {
+        if (playSounds)
+            soundPool.play(soundId, 1.0F, 1.0F, 1, 0, rate);
     }
 
 }

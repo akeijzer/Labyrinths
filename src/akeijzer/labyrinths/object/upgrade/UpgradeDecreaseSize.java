@@ -26,17 +26,16 @@ public class UpgradeDecreaseSize extends Upgrade
         paint.setColorFilter(new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY));
     }
 
-    public boolean collision()
+    public void update()
     {
         for (Ball ball : view.world.balls)
         {
             if (OverlapTester.overlapCircleRectangle(ball.bounds, bounds))
             {
                 ball.radius = (int) (ball.radius * 0.75);
-                return true;
+                view.iObjects.remove();
             }
         }
-        return false;
     }
 
     public void draw(Canvas canvas)
