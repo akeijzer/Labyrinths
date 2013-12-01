@@ -2,8 +2,8 @@ package akeijzer.labyrinths.object;
 
 import java.util.Iterator;
 
+import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.maths.OverlapTester;
-import akeijzer.labyrinths.view.GameView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,9 +12,9 @@ public class EndPoint extends GameRect
 {
     public Paint paint;
 
-    public EndPoint(int posX, int posY, int sizeX, int sizeY, GameView view)
+    public EndPoint(int posX, int posY, int sizeX, int sizeY, World world)
     {
-        super(posX, posY, sizeX, sizeY, view);
+        super(posX, posY, sizeX, sizeY, world);
         paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setAlpha(100);
@@ -23,7 +23,7 @@ public class EndPoint extends GameRect
     public void update()
     {
         super.update();
-        Iterator<Ball> it = view.world.balls.iterator();
+        Iterator<Ball> it = world.balls.iterator();
         while (it.hasNext())
         {
             Ball ball = it.next();

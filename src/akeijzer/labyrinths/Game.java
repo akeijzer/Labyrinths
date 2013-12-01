@@ -17,6 +17,7 @@ public class Game extends Activity
     {
         super.onCreate(savedInstanceState);
 
+        // Setting fullscreen and keep screen on
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -31,6 +32,7 @@ public class Game extends Activity
     {
         super.onPause();
         orientation.onPause();
+        view.setPaused(true);
     }
 
     @Override
@@ -38,6 +40,6 @@ public class Game extends Activity
     {
         super.onResume();
         orientation.onResume();
+        view.setPaused(false);
     }
-
 }

@@ -1,48 +1,31 @@
 package akeijzer.labyrinths.game.level;
 
 import akeijzer.labyrinths.game.World;
-import akeijzer.labyrinths.maths.Side;
 import akeijzer.labyrinths.object.Ball;
-import akeijzer.labyrinths.object.Booster;
-import akeijzer.labyrinths.object.Button;
-import akeijzer.labyrinths.object.Door;
 import akeijzer.labyrinths.object.EndPoint;
 import akeijzer.labyrinths.object.Wall;
-import akeijzer.labyrinths.object.upgrade.UpgradeDecreaseSize;
-import akeijzer.labyrinths.object.upgrade.UpgradeIncreaseSize;
 
-public class Level1 extends Level
+public class Level1
 {
-    public Level1(World world)
+    public static void loadLevel(World world)
     {
-        super(world);
-    }
-
-    @Override
-    void loadLevel()
-    {
-        world.balls.add(new Ball(200, 200, 40, 0.2F, view));
-        world.balls.add(new Ball(200, 400, 40, 0.002F, view));
-
+        int width = world.view.getWidth();
+        int height = world.view.getHeight();
+        
+        world.balls.add(new Ball(20 + 15, 20 + 15, 40, 0.002F, world));
+        
+        world.objects.add(new Wall(125 + 10, height / 2 - 50, 50, height - 120, world));
+        world.objects.add(new Wall(width/2, height - 125 - 10, width - 2*135 - 50, 50, world));
+        world.objects.add(new Wall(width - (125 + 10), height / 2, 50, height - 220, world));
+        
+        world.objects.add(new EndPoint(width/2, height - 210, width - 160*2, 100, world));
+        
         /*
          * Screen Walls
          */
-        world.objects.add(new Wall(width / 2, 5, width, 10, view));
-        world.objects.add(new Wall(width / 2, height - 5, width, 10, view));
-        world.objects.add(new Wall(5, height / 2, 10, height, view));
-        world.objects.add(new Wall(width - 5, height / 2, 10, height, view));
-
-        world.objects.add(new Wall(width / 2 - 10, height / 2 + 100, 50, height - 200, view));
-
-        Door door = new Door(width / 2 - 10, 100, 50, 200, view);
-        world.objects.add(door);
-        world.objects.add(new Button(100, height - 50, Side.BOTTOM, door, view));
-
-        world.objects.add(new EndPoint(width - 100, height - 100, 200, 200, view));
-
-        world.objects.add(new UpgradeIncreaseSize(500, 500, view));
-        world.objects.add(new UpgradeDecreaseSize(500, 1000, view));
-
-        world.objects.add(new Booster(300, 600, 200, 200, Side.TOP, view));
+        world.objects.add(new Wall(width / 2, 5, width, 10, world));
+        world.objects.add(new Wall(width / 2, height - 5, width, 10, world));
+        world.objects.add(new Wall(5, height / 2, 10, height, world));
+        world.objects.add(new Wall(width - 5, height / 2, 10, height, world));
     }
 }

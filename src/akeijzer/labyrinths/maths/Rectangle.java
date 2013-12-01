@@ -1,5 +1,11 @@
 package akeijzer.labyrinths.maths;
 
+/**
+ * Used for collision detection
+ * 
+ * @author Alexander Keijzer
+ *
+ */
 public class Rectangle
 {
     public final Vector2 topLeft;

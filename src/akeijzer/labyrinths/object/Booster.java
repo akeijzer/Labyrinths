@@ -2,9 +2,9 @@ package akeijzer.labyrinths.object;
 
 import java.util.Iterator;
 
+import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.maths.OverlapTester;
 import akeijzer.labyrinths.maths.Side;
-import akeijzer.labyrinths.view.GameView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,9 +14,9 @@ public class Booster extends GameRect
     public Paint paint;
     private Side boostingSide;
 
-    public Booster(int posX, int posY, int sizeX, int sizeY, Side boostingSide, GameView view)
+    public Booster(int posX, int posY, int sizeX, int sizeY, Side boostingSide, World world)
     {
-        super(posX, posY, sizeX, sizeY, view);
+        super(posX, posY, sizeX, sizeY, world);
         this.boostingSide = boostingSide;
         paint = new Paint();
         paint.setColor(Color.RED);
@@ -33,7 +33,7 @@ public class Booster extends GameRect
     public void update()
     {
         super.update();
-        Iterator<Ball> it = view.world.balls.iterator();
+        Iterator<Ball> it = world.balls.iterator();
         while (it.hasNext())
         {
             Ball ball = it.next();

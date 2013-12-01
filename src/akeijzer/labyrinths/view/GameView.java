@@ -1,17 +1,15 @@
 package akeijzer.labyrinths.view;
 
-import java.util.Iterator;
-
 import akeijzer.labyrinths.Game;
 import akeijzer.labyrinths.R;
+import akeijzer.labyrinths.game.EndScreen;
+import akeijzer.labyrinths.game.GameState;
 import akeijzer.labyrinths.game.GameThread;
+import akeijzer.labyrinths.game.StartScreen;
 import akeijzer.labyrinths.game.World;
-import akeijzer.labyrinths.object.Ball;
-import akeijzer.labyrinths.object.GameObject;
-import akeijzer.labyrinths.physics.CollisionEffects;
+import akeijzer.labyrinths.lib.Resources;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
@@ -21,17 +19,16 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements Callback
 {
-    private Game game;
+    public Game game;
     public World world;
+    public StartScreen startScreen;
+    public EndScreen endScreen;
     private SoundPool soundPool;
-    public boolean playSounds = true;
+    public boolean playSounds = false;
     private SurfaceHolder holder;
-    private GameThread thread;
-    public Iterator<GameObject> iObjects;
-    public Iterator<Ball> iBalls;
-    public boolean stopIteration = false;
-
-    public float orientation[] = new float[3];
+    public GameThread thread;
+    private GameState gameState;
+    private boolean paused = false;
 
     public GameView(Context context)
     {
@@ -40,15 +37,17 @@ public class GameView extends SurfaceView implements Callback
         holder = getHolder();
         holder.addCallback(this);
 
+        // Init Main Thread and Sounds
         thread = new GameThread(holder, this);
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         initSounds();
+        Resources.init(this);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-        this.world = new World(this);
+        setGameState(GameState.STARTSCREEN);
         thread.setRunning(true);
         thread.start();
     }
@@ -77,65 +76,92 @@ public class GameView extends SurfaceView implements Callback
     {
     }
 
+    /**
+     * Redirects render order to active gameState
+     * 
+     * @param canvas
+     */
     public void render(Canvas canvas)
     {
-        canvas.drawColor(Color.WHITE);
-
-        for (GameObject gameObject : world.objects)
+        if (!paused)
         {
-            gameObject.draw(canvas);
-        }
-
-        for (Ball ball : world.balls)
-        {
-            ball.draw(canvas);
+            switch (gameState)
+            {
+            case STARTSCREEN:
+                startScreen.render(canvas);
+                break;
+            case INGAME:
+                world.render(canvas);
+                break;
+            case ENDSCREEN:
+                endScreen.render(canvas);
+                break;
+            }
         }
     }
 
+    /**
+     * Redirects update order to active gameState
+     */
     public void update()
     {
-        orientation = game.orientation.getOrientation();
-
-        iBalls = world.balls.iterator();
-        while (iBalls.hasNext())
+        if (!paused)
         {
-            Ball ball = iBalls.next();
-            ball.update();
-        }
-        iBalls = null;
-
-        iObjects = world.objects.iterator();
-        while (!stopIteration && iObjects.hasNext())
-        {
-            GameObject gameObject = iObjects.next();
-            gameObject.update();
-        }
-        stopIteration = false;
-        iObjects = null;
-        for (Ball ball : world.balls)
-        {
-            for (Ball ball2 : world.balls)
+            switch (gameState)
             {
-                if (ball2 != ball)
-                {
-                    CollisionEffects.circleEffect(ball, ball2);
-                }
+            case STARTSCREEN:
+                
+                break;
+            case INGAME:
+                world.update();
+                break;
+            case ENDSCREEN:
+                
+                break;
             }
         }
-
-        if (world.balls.isEmpty())
+    }
+    
+    public void setGameState(GameState gameState)
+    {
+        switch (gameState)
         {
-            world.levelHandler.loadNextLevel();
+        case STARTSCREEN:
+            this.startScreen = new StartScreen(this);
+            setOnTouchListener(startScreen);
+            break;
+        case INGAME:
+            this.world = new World(this);
+            break;
+        case ENDSCREEN:
+            endScreen = new EndScreen(this, world.getTime());
+            setOnTouchListener(endScreen);
+            break;
         }
+        this.gameState = gameState;
+    }
+    
+    public void setPaused(boolean paused)
+    {
+        this.paused = paused;
     }
 
     public int tickSoundId;
 
+    /**
+     * Initialises sounds
+     */
     public void initSounds()
     {
         tickSoundId = soundPool.load(game, R.raw.tick, 1);
     }
 
+    /**
+     * Plays sounds from soundId and rate
+     * 
+     * @param soundId
+     * @param rate
+     */
     public void playSound(int soundId, float rate)
     {
         if (playSounds) soundPool.play(soundId, 1.0F, 1.0F, 1, 0, rate);

@@ -18,7 +18,11 @@ public class OrientationListener implements SensorEventListener
     {
         this.sensorManager = sensorManager;
     }
-
+    
+    /**
+     * Get the current orientation
+     * @return current orientation
+     */
     public float[] getOrientation()
     {
         calculateOrientation();
@@ -36,7 +40,7 @@ public class OrientationListener implements SensorEventListener
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_GAME);
     }
-
+    
     @Override
     public void onSensorChanged(SensorEvent event)
     {
@@ -54,7 +58,10 @@ public class OrientationListener implements SensorEventListener
             return;
         }
     }
-
+    
+    /**
+     * Calculates the device orientation from the accelerometer and magnetic field inputs
+     */
     public void calculateOrientation()
     {
         if (newValue)

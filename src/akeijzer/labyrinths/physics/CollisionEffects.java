@@ -1,13 +1,12 @@
 package akeijzer.labyrinths.physics;
 
 import akeijzer.labyrinths.maths.Rectangle;
+import akeijzer.labyrinths.maths.Side;
 import akeijzer.labyrinths.maths.Vector2;
 import akeijzer.labyrinths.object.Ball;
 
 public class CollisionEffects
 {
-    // ref:
-    // http://gamedev.stackexchange.com/questions/20516/ball-collisions-sticking-together
     public static void circleEffect(Ball a, Ball b)
     {
         double xDist, yDist;
@@ -44,8 +43,6 @@ public class CollisionEffects
         }
     }
 
-    // ref
-    // http://stackoverflow.com/questions/18704999/how-to-fix-circle-and-rectangle-overlap-in-collision-response
     public static Intersection handleIntersection(Rectangle rectangle, Vector2 start, Vector2 end, float radius)
     {
         final float L = rectangle.pos.x - (rectangle.width / 2);
@@ -85,7 +82,7 @@ public class CollisionEffects
                 // Does the collisions point lie on the left side?
                 if (ly >= T && ly <= B)
                 {
-                    return new Intersection(dx * ltime + start.x, ly, ltime, -1, 0, L, ly);
+                    return new Intersection(dx * ltime + start.x, ly, ltime, -1, 0, L, ly, Side.LEFT);
                 }
             }
             cornerX = L;
@@ -103,7 +100,7 @@ public class CollisionEffects
                 // Does the collisions point lie on the right side?
                 if (ry >= T && ry <= B)
                 {
-                    return new Intersection(dx * rtime + start.x, ry, rtime, 1, 0, R, ry);
+                    return new Intersection(dx * rtime + start.x, ry, rtime, 1, 0, R, ry, Side.RIGHT);
                 }
             }
             cornerX = R;
@@ -121,7 +118,7 @@ public class CollisionEffects
                 // Does the collisions point lie on the top side?
                 if (tx >= L && tx <= R)
                 {
-                    return new Intersection(tx, dy * ttime + start.y, ttime, 0, -1, tx, T);
+                    return new Intersection(tx, dy * ttime + start.y, ttime, 0, -1, tx, T, Side.TOP);
                 }
             }
             cornerY = T;
@@ -139,7 +136,7 @@ public class CollisionEffects
                 // Does the collisions point lie on the bottom side?
                 if (bx >= L && bx <= R)
                 {
-                    return new Intersection(bx, dy * btime + start.y, btime, 0, 1, bx, B);
+                    return new Intersection(bx, dy * btime + start.y, btime, 0, 1, bx, B, Side.BOTTOM);
                 }
             }
             cornerY = B;
@@ -200,7 +197,7 @@ public class CollisionEffects
             float nx = (float) (cornerdx / cornerDistance);
             float ny = (float) (cornerdy / cornerDistance);
 
-            return new Intersection(ix, iy, time, nx, ny, cornerX, cornerY);
+            return new Intersection(ix, iy, time, nx, ny, cornerX, cornerY, null);
         }
 
         double innerAngleSin = Math.sin(innerAngle);
@@ -234,6 +231,6 @@ public class CollisionEffects
         float nx = (float) ((ix - cornerX) * inverseRadius);
         float ny = (float) ((iy - cornerY) * inverseRadius);
 
-        return new Intersection(ix, iy, time, nx, ny, cornerX, cornerY);
+        return new Intersection(ix, iy, time, nx, ny, cornerX, cornerY, null);
     }
 }

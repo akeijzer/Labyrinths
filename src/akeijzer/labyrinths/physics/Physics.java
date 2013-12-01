@@ -7,11 +7,22 @@ public class Physics
     public static final float AIR_DESITY = 1.293F;
     public static final float DRAG_COEFFICIENT = 0.47F;
 
+    /**
+     * Calculates object acceleration from device orientation
+     * @param orientation
+     * @return acceleration
+     */
     public static float calculateAcceleration(float orientation)
     {
         return (ACCELERATION_CONSTANT * GAVITATION_CONSTANT * (float) Math.sin(orientation));
     }
-
+    
+    /**
+     * Calculates friction from velosity and radius(not used)
+     * @param velocity
+     * @param radius
+     * @return acceleration
+     */
     public static float calculateFriction(float velocity, float radius)
     {
 

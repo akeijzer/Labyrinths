@@ -1,7 +1,7 @@
 package akeijzer.labyrinths.object;
 
+import akeijzer.labyrinths.game.World;
 import akeijzer.labyrinths.maths.Side;
-import akeijzer.labyrinths.view.GameView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,13 +13,13 @@ public class Button extends GameRectCollidable
     private Side connectedSide;
     private Door door;
 
-    public Button(int posX, int posY, Side connectedSide, Door door, GameView view)
+    public Button(int posX, int posY, Side connectedSide, Door door, World world)
     {
-        super(posX, posY, 80, 80, view);
+        super(posX, posY, (connectedSide == Side.LEFT || connectedSide == Side.RIGHT)? 40: 80, (connectedSide == Side.TOP || connectedSide == Side.BOTTOM)? 40: 80, world);
         this.connectedSide = connectedSide;
         this.door = door;
         paint = new Paint();
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.RED);
     }
 
     @Override
